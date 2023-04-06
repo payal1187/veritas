@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import BasePermission, IsAuthenticated
 from rest_framework.response import Response
@@ -105,11 +106,48 @@ class SignIn(APIView):
 
 class ChangePassword(APIView):
     permission_classes = IsAuthenticated
+    def get_object(self,queryset=None):
+        return self.request.user
+
+
+
+
+
+
+class Newsletter_Subscription(APIView):
     def post(self,request):
         data = request.data
-        serializer = ChangePasswordSerializer(data=data ,context={'user':request.user})
-        if serializer.is_valid(raise_exception=True):
-            return Response({"msg":"Password changed sucessfully"})
+        serializers = NewsletterSubscriptionSerializer(data=data)
+        if serializers.is_valid(raise_exception=True):
+            return Response({"msg":"Subscription for newsletter"})
+        return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class Catalog_Subscription(APIView):
+    def post(self,request):
+        data = request.data
+        serializers = CatalogSubscriptionSerializer(data=data)
+        if serializers.is_valid(raise_exception=True):
+            return Response({"msg":"Subscription for catalog"})
+        return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

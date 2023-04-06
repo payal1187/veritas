@@ -29,6 +29,7 @@ class Customer(models.Model):
     is_seller = models.BooleanField(default=False)
     is_received_text = models.BooleanField(default=False)
     is_email_verified = models.BooleanField(default=False)
+    old_password = models.CharField(null=True, blank=True, max_length=200)
     password = models.CharField(null=True, blank=True, max_length=200)
     token = models.TextField(null=True, blank=True)
     password2 = models.CharField(null=True, blank=True, max_length=200)
@@ -38,5 +39,6 @@ class Customer(models.Model):
 
     class Meta:
         db_table = "customers"
+
 
 

@@ -4,24 +4,39 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
 class CustomerSerializer(serializers.ModelSerializer):
+    #email =serializers.EmailField(required=True)
+    #password = serializers.CharField(required=True)
     class Meta:
         model = Customer
         fields = ["name","surname","email","password","token"]
 
 
-class ChangePasswordSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length=255,style={'input_type':'password'},write_only=True,required=True)
-    password2 = serializers.CharField(max_length=255, style={'input_type': 'password'}, write_only=True,required=True)
+class CustomerChangePasswordSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    password2 = serializers.CharField(required=True)
     class Meta:
         model = Customer
-        fields = ["password","password2"]
+        fields = ["old_password","password","password2"]
 
-    def validate(self, data):
-        password = data.get('password')
-        password2 = data.get('password2')
-        user = self.context.get('user')
-        if password != password2:
-            raise serializers.ValidationError("Password and Confirm password doesn't match.")
-        user.set_password(password)
-        user.save()
-        return data
+        def validate(self,data):
+            if data['password'] != data['password2']:
+                raise serializers.ValidationError({"password":"password fields didn't match"})
+            return data
+
+
+
+
+class NewsletterSubscriptionSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    class Meta:
+        model = Customer
+        fields = ["name","email","is_subscribed_to_newsletter"]
+
+class CatalogSubscriptionSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    class Meta:
+        model = Customer
+        fields = ["name","email","is_subscribed_to_catalog"]
