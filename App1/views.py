@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
@@ -103,15 +103,15 @@ class SignIn(APIView):
             #return Response(data={"IsStatus": False, "Message": "Invalid email or password."},status=status.HTTP_400_BAD_REQUEST,)
 
 
-
+'''
 class ChangePassword(APIView):
-    permission_classes = IsAuthenticated
-    def get_object(self,queryset=None):
-        return self.request.user
-
-
-
-
+    permission_classes = IsAuthenticated,
+    def post(self,request):
+        data = request.data
+        serializer = CustomerChangePasswordSerializer(data=data, context={'user': str(request.user)})
+        if serializer.is_valid(raise_exception=True):
+            return Response({"msg":"password changed successfully"})
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)'''
 
 
 class Newsletter_Subscription(APIView):
@@ -129,27 +129,3 @@ class Catalog_Subscription(APIView):
         if serializers.is_valid(raise_exception=True):
             return Response({"msg":"Subscription for catalog"})
         return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

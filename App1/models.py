@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 # Customer  Model
@@ -39,6 +41,18 @@ class Customer(models.Model):
 
     class Meta:
         db_table = "customers"
+
+
+class Subscription(models.Model):
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    name = models.CharField(null=True, blank=True, max_length=100)
+    email = models.EmailField(null=True, blank=True)
+    date = models.DateField(default=datetime.date.today)
+
+    class Meta:
+       db_table = "subscription"
+
+
 
 
 
