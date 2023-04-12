@@ -129,27 +129,3 @@ class Catalog_Subscription(APIView):
         if serializers.is_valid(raise_exception=True):
             return Response({"msg":"Subscription for catalog"})
         return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
